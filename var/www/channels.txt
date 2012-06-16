@@ -1,0 +1,20 @@
+1;http://www.radioswissclassic.ch/live/mp3.m3u;Schweizer Klassiksender
+2;http://www.inforadio.de/live.m3u;Inforadio Berlin-Brandenburg
+3;http://www.dradio.de/streaming/dlf.m3u;Deutschlandfunk
+4;http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3;Klassikradio
+5;nicht vergeben;nicht vergeben
+6;http://www.ndr.de/resources/metadaten/audio/m3u/ndrinfo.m3u;NDR Info
+7;http://www.dradio.de/streaming/dkultur.m3u;Deutschlandradio Kultur
+8;http://85.239.108.41/90elf_basis_hq;90elf: Bundesliga-Konferenz
+9;http://www.wdr.de/wdrlive/media/fhe.m3u;Funkhaus europa
+10;http://www.multicult.fm/fileadmin/stream/multicult.FM.m3u;Multicult2.0
+11;http://mp3stream7.apasf.apa.at:8000;Ö3 (Österreich)
+12;http://srvhost24.serverhosting.apa.net:8000/rsdstream128.m3u;Radio Stephansdom
+13;http://www.latinastereo.com/html/listen.pls;Salsa
+14;http://radio.memonet.ru:8000/echo.mp3;Echo Moskvy
+15;http://www.dradio.de/streaming/dradiowissen.m3u;Deutschlandradio Wissen
+16;http://stream.berliner-rundfunk.de/brf/mp3-128/internetradio/;Berliner Rundfunk 91.4
+17;http://listen.radionomy.com/Radio-Cubana;Radio Cubana
+18;http://stream.hoerradar.de/antennemv-mp3.m3u;Antenne MV
+19;http://85.239.108.41/90elf_rp01;90elf: Bundesliga Spiel Nr. 1
+20;http://85.239.108.41/90elf_rp02;90elf: Bundesliga Spiel Nr. 2
