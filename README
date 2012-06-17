@@ -1,1 +1,5 @@
 radiogaga: a python CLI-webradioapp to be run on a thinclient
+
+The files radiogaga.py and radio-cgi.py are free software released under the terms of the GPL v2.
+
+For details check the file LICENSE or http://www.gnu.org/licenses/gpl-2.0.html
