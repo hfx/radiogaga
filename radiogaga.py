@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
  
-import curses, sys, subprocess
+import curses, sys, subprocess, os
 
 class Radiogaga:
 	keylist = [] 
@@ -11,6 +11,7 @@ class Radiogaga:
 	def __init__(self):
 		# start curses
 		stdscr = curses.initscr()
+		curses.def_shell_mode()
 		# Keine Anzeige gedrückter Tasten
 		curses.noecho()
 		# Kein line-buffer
@@ -21,44 +22,22 @@ class Radiogaga:
 		self.playRadio(stdscr)
 	
 	def channelDict(self):
-		"""
-		fobj = open("channels.txt", "r")
-		for line in fobj:
-			print line
-			#l = line.split[' ']
-			#self.channel[ l[0] ] = l[1]
-		fobj.close()
-		
-		"""	
-		self.channel = {
-				"1" : "http://www.radioswissclassic.ch/live/mp3.m3u",
-				"2" : "http://www.inforadio.de/live.m3u",
-				"3" : "http://www.dradio.de/streaming/dlf.m3u",
-				"4" : "http://edge.live.mp3.mdn.newmedia.nacamar.net/klassikradio128/livestream.mp3",
-				"5" : "",
-				"6" : "http://www.ndr.de/resources/metadaten/audio/m3u/ndrinfo.m3u",
-				"7" : "http://www.dradio.de/streaming/dkultur.m3u", 
-				"8" : "http://85.239.108.41/90elf_basis_hq",
-				"9" : "http://www.wdr.de/wdrlive/media/fhe.m3u", # funkhaus europa
-				"10" : "http://www.multicult.fm/fileadmin/stream/multicult.FM.m3u", # multicult2.0 #kaputt
-				"11" : "http://mp3stream7.apasf.apa.at:8000", # ö3
-				"12" : "http://srvhost24.serverhosting.apa.net:8000/rsdstream128.m3u", # stephansdom
-				"13" : "http://www.latinastereo.com/html/listen.pls", # salsa
-				"14" : "http://radio.memonet.ru:8000/echo.mp3",
-				"15" : "http://www.dradio.de/streaming/dradiowissen.m3u",
-				"16" : "http://stream.berliner-rundfunk.de/brf/mp3-128/internetradio/",
-				"17" : "http://listen.radionomy.com/Radio-Cubana",
-				"18" : "http://stream.hoerradar.de/antennemv-mp3.m3u",
-				"19" : "http://85.239.108.41/90elf_rp01",
-				"20" : "http://85.239.108.41/90elf_rp02",
-			}
-		
+		# fetch the list of channels
+		filename = "/var/www/channels.txt"
+		FILE = open(filename,"r+")
+		for line in FILE:
+                	ziffer, sender, info  = line.split(";")
+			self.channel[ziffer] = sender
+
 	def exitCurses(self, stdscr):
 		# Ende
 		curses.nocbreak()
 		stdscr.keypad(0)
 		curses.echo()
 		curses.endwin()
+		# cannot restore normal mode after curses-exit, wtf?
+		curses.reset_shell_mode()
+		print "ending radio session"
 
 	def getNumKey(self, c):
 		if c == 27: # Escape
@@ -123,49 +102,38 @@ class Radiogaga:
 
 	def playRadio(self, stdscr):
 		try:
-			channel = "http://www.radioswissclassic.ch/live/mp3.m3u"
-			radio1 = subprocess.Popen(['mpg123', '-@', channel])	
+			#default channel on startup
+			actualChannel = "http://www.radioswissclassic.ch/live/mp3.m3u"
+			radio1 = subprocess.Popen(['mpg123', '-@', actualChannel])	
 			while True:			
 				# Warten auf Tastendruck
 				c = stdscr.getch()
 				self.debuglist.append(c)
-				channel = self.getNumKey(c)
-				self.keylist.append( channel )
-				if channel != '':
-					if channel == 'Enter':
-						radio1.kill()
-						#subprocess.Popen(['shutdown', '-h', 'now'])	
-						#break
-					elif channel == 'DEL':
+				actualChannel = self.getNumKey(c)
+				self.keylist.append( actualChannel )
+				if actualChannel != '':
+					# Enter mutes the radio and reads in a new channel list
+					if actualChannel == 'Enter':
 						try:
 							radio1.kill()
+							self.channelDict()
 						except:
 							pass
-						#break
-						subprocess.Popen(['shutdown', '-h', 'now'])
-				
-			
+					# ESC kills the radio
+					elif actualChannel == 'ESC':
+						try:
+							radio1.kill()
+							break
+						except:
+							pass
+					# other keys: an other channel chosen
 					else:
 						try:
 							radio1.kill()
 						except:
 							pass
-						radio1 = subprocess.Popen(['mpg123', '-@', channel])
+						radio1 = subprocess.Popen(['mpg123', '-@', actualChannel])
 					
-				#break
-
-			
-					
-
-			#	if c == "[H":
-			#		break
-			#		radio1 = subprocess.Popen(['mpg123', '-@', 'http://www.radioswissclassic.ch/live/mp3.m3u'])
-			#	elif c == 2:
-			#		print c
-			#		radio1.kill()	
-
-
-
 		finally: 
 			self.exitCurses(stdscr)
 			print self.keylist

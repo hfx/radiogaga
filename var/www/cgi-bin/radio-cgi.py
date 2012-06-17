@@ -10,10 +10,10 @@ def createForm(text):
 	<html>
 	<head>
 	<title>RadioGaGa</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	</head>
 	<body>
-	<form method='post' accept-charset='ISO-8859-1'>
+	<form method='post' accept-charset='utf-8'>
 	%s
 	<p><input type='submit' value='Formulardaten absenden'></p>
 	</form>
